@@ -8,14 +8,18 @@ const client = new Client({
     port: '4326'
 });
 
-function GetUserList() {
-    client.connect();
-    client.query('SELECT count(*) FROM public.cmm_sys_menu', (err, res) => {
-        console.log(res);
-        client.end();
+client.connect();
+
+const getList = (req, res)=> {
+    client.query('SELECT count(*) FROM public.cmm_sys_menu', (err, data) => {
+        if (err) {
+            throw err
+          }
+          res.status(200).json(data.rows)
+          console.log(data);
     });
-};
+}
 
 module.exports = {
-    getUserList: GetUserList
+    getList
 }
